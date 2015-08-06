@@ -56,12 +56,12 @@ public class RssHandler extends DefaultHandler {
 		if(news!=null){
 			if(currentTag.equals(TITLE)){
 				news.setTitle(data);
-//			}else if(currentTag.equals(DESCRIPTION)){
-//				news.setDescription(data);
-//			}else if(currentTag.equals(LINK)){
-//				news.setLink(data);
-//			}else if(currentTag.equals(PUBDATE)){
-//				news.setPubDate(data);
+			}else if(currentTag.equals(DESCRIPTION)){
+				news.setDescription(data);
+			}else if(currentTag.equals(LINK)){
+				news.setLink(data);
+			}else if(currentTag.equals(PUBDATE)){
+				news.setPubDate(data);
 			}
 		}
 			
