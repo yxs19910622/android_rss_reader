@@ -11,12 +11,12 @@ import android.util.Log;
 
 public class SaxFactory {
 
-	public static List<News> readXml(InputStream is,String nodeName){
+	public static List<News> readXml(InputStream is){
 		
 		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance(); 
 		try {
 			SAXParser saxParser = saxParserFactory.newSAXParser();
-			RssHandler rssHandler = new RssHandler(nodeName);
+			RssHandler rssHandler = new RssHandler();
 			saxParser.parse(is, rssHandler);
 			is.close();
 			return rssHandler.getNewsList();

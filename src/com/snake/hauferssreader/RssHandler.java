@@ -14,11 +14,9 @@ public class RssHandler extends DefaultHandler {
 
 	private News news;
 	private List<News> newsList;
-	private String nodeName;
 	private String currentTag;
 	
-	public RssHandler(String nodeName) {
-		this.nodeName = nodeName;
+	public RssHandler() {
 	}
 	final String ITEM = "item";
 	final String TITLE = "title";
@@ -29,7 +27,6 @@ public class RssHandler extends DefaultHandler {
 	public void startDocument() throws SAXException {
 		// 当读到第一个标签的时候 触发方法
 		newsList = new ArrayList<News>();
-		Log.i("snake", "789");
 	}
 	
 	public List<News> getNewsList() {
@@ -40,7 +37,7 @@ public class RssHandler extends DefaultHandler {
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
 		// 当遇到文档开头的时候 调用
-		if(qName.equals(nodeName)){
+		if(qName.equals(ITEM)){
 			news = new News();
 		}
 		currentTag = qName;
@@ -73,8 +70,7 @@ public class RssHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		// 遇到结束标记时调用
-		if(qName.equals(nodeName)){
-			Log.i("snake",news.toString());
+		if(qName.equals(ITEM)){
 			newsList.add(news);
 		}
 	}
