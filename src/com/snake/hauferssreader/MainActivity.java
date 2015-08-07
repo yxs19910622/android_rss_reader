@@ -1,25 +1,31 @@
 package com.snake.hauferssreader;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ListActivity {
 
 	private Button button;
 
 	private ListView listView;
+
+	private List<News> newsList;
 
 	private ArrayAdapter<String> arrayAdapter;
 
@@ -37,20 +43,19 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		listView = (ListView) this.findViewById(R.id.list);
+		
+		listView = getListView();
 		new Thread() {
 
 			@Override
 			public void run() {
 				String path = "http://www.zhihu.com/rss";
 				InputStream is = HttpUtil.getXml(path);
-				List<News> newsList = SaxFactory.readXml(is);
+				newsList = SaxFactory.readXml(is);
 				List<String> titles = new ArrayList<String>(newsList.size());
 				for (News news : newsList) {
 					titles.add(news.getTitle());
 				}
-
 				Message message = Message.obtain();
 				message.what = 1;
 				message.obj = titles;
@@ -58,7 +63,34 @@ public class MainActivity extends Activity {
 
 			}
 		}.start();
+		
+	}
 
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		News news = newsList.get(position);
+		//点击后跳转到详细页查看信息
+		Intent intent = new Intent(MainActivity.this, DescriptionActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString("title", news.getTitle());
+		bundle.putString("description", news.getDescription());
+		bundle.putString("link", news.getLink());
+		bundle.putString("pubDate", news.getPubDate());
+		intent.putExtra("news", bundle);
+		startActivity(intent);
 	}
 
 }
+
+		/*Intent viewMessage = null;
+		try {
+			viewMessage = new Intent(
+					Intent.ACTION_VIEW,
+					Uri.parse(new URL(this.newsList.get(position).getLink()).toExternalForm()));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.startActivity(viewMessage);*/
+
