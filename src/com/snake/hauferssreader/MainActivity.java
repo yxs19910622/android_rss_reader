@@ -15,9 +15,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends ListActivity {
 
@@ -80,9 +83,63 @@ public class MainActivity extends ListActivity {
 		intent.putExtra("news", bundle);
 		startActivity(intent);
 	}
+	
+	
+	
+	class MyAdapter extends BaseAdapter {
+		
+		List<String> titles;
+		public MyAdapter (List<String> titles){
+			this.titles = titles;
+		}
+
+		@Override
+		public int getCount() {
+			return titles.size();
+		}
+
+		@Override
+		public Object getItem(int arg0) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int arg0) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View contentView, ViewGroup arg2) {
+			
+			ViewHolder holder;
+			View view;
+			if(contentView == null) {
+				holder = new ViewHolder();
+				view = View.inflate(MainActivity.this, R.layout.title, null);
+				holder.title = (TextView) view.findViewById(R.id.title);
+				
+				view.setTag(holder);
+			}else {
+				view = contentView;
+				holder = (ViewHolder) view.getTag();
+			}
+			
+			String titleStr = titles.get(position);
+			holder.title.setText(titleStr);
+			
+			return view;
+		}
+		
+	}
+	
+	class ViewHolder {
+		TextView title;
+	}
 
 }
 
+		
+		
 		/*Intent viewMessage = null;
 		try {
 			viewMessage = new Intent(

@@ -54,8 +54,12 @@ public class RssHandler extends DefaultHandler {
 		if(news!=null){
 			
 			if(currentTag.equals(TITLE)){
-				news.setTitle(data);
-				return;
+				if(news.getTitle()!=null){
+					String l = news.getTitle();
+					news.setTitle(l+data);
+				}else{
+					news.setTitle(data);
+				}
 			} 
 			if(currentTag.equals(DESCRIPTION)){
 				if(news.getDescription()!=null){
@@ -64,7 +68,6 @@ public class RssHandler extends DefaultHandler {
 				}else{
 					news.setDescription(data);
 				}
-				return;
 			}
 			if(currentTag.equals(LINK)){
 				if(news.getLink()!=null){
@@ -73,11 +76,9 @@ public class RssHandler extends DefaultHandler {
 				}else{
 					news.setLink(data);
 				}
-				return;
 			}
 			if(currentTag.equals(PUBDATE)){
 				news.setPubDate(data);
-				return;
 			}
 		}
 			
